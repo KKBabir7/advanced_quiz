@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Intenlisity | Student Questions</title>
+  <link rel="icon" type="image/x-icon" href="asset/img/logo/favicon.ico" />
+  <link rel="stylesheet" href="asset/css/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="asset/icon/font_awesome_icon/css/all.css" />
+  <link
+    rel="stylesheet"
+    href="asset/icon/bootstrap_icon/bootstrap-icons.css"
+  />
+  <link rel="stylesheet" href="asset/css/custom/aos.css" />
+  <link rel="stylesheet" href="asset/css/custom/dashboard-root.css" />
+  <link rel="stylesheet" href="asset/css/custom/select2.min.css" />
+  <link rel="stylesheet" href="asset/css/custom/dashboard-navbar.css" />
+  <link rel="stylesheet" href="asset/css/custom/dashboard-style.css" />
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css">
+  
+</head>
+
+<style>
+  body,html{
+    background: none !important;
+  }
+  img {
+    image-rendering: -moz-crisp-edges !important;
+    image-rendering: -o-crisp-edges !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;
+  }
+  @media screen and (max-width: 767px) {
+  .navbar-nav.navbar-left{
+    display: none;
+  }    
+  }
+
+</style>
+<style>
+
+
+/* .question-buttons button{
+  color: white !important;
+}
+.question-buttons button.answered {
+background-color: var(--commonColor);
+color: white;
+}
+.question_number_lists #includeQuestionList li button.view_qestions{
+  background: #ffd667 !important;
+}
+
+.left__time{
+  opacity: 0.6;
+  font-size: 16px !important;
+}
+.question-buttons button.skipped {
+background: #C6C6C6 ;
+color: white;
+}
+.locked {
+opacity: 0.6;
+pointer-events: none;
+user-select: none;
+} */
+
+
+.question { display: none; }
+    .question.active { display: block; }
+    .progress-bar { width: 100%; height: 20px; background: #ddd; }
+    .progress-bar div { height: 100%; background: green; width: 0; }
+    .countdown { font-size: 16px; }
+   
+    .locked { pointer-events: none; opacity: 0.6; }
+    /* .not-answered { background-color: white; }
+    .current-question { background-color: skyblue; }
+    .skipped { background-color: gray; }
+    .submitted-correct { background-color: green; }
+    .submitted-wrong { background-color: red; }
+    .answered { background-color: yellow; } */
+    #includeQuestionList button {
+  border: 1px solid #ffffff;
+  background-color: #fff;
+  padding: 5px 10px;
+  margin: 3px;
+  cursor: pointer;
+}
+
+#includeQuestionList button.current {
+  background: #ADCED8; /* Sky Blue */
+  color: #fff;
+}
+
+#includeQuestionList button.answered {
+  background-color: #314D63; /* Yellow */
+  color: #fff;
+}
+
+#includeQuestionList button.current.answered {
+  background: #ADCED8; /* Sky Blue override for current+answered */
+}
+
+#includeQuestionList button.skipped {
+  background-color: #D4D4D4; /* Gray */
+  color: #fff;
+}
+
+#includeQuestionList button.submitted-correct {
+  background-color: #8FB9AA; /* Green */
+  color: white;
+}
+
+#includeQuestionList button.submitted-wrong {
+  background-color: #ee674f; /* Red */
+  color: white;
+}
+#includeQuestionList button.reviewQuesans {
+  background-color: #F2D096; /* Red */
+  color: white;
+}
+#includeQuestionList button.submitted-review {
+  background-color: #f2ff00 ;
+
+}
+
+</style>
+<body>
+  <header class="header-menu" id="header-menu" style="width: 100% !important;padding: 0px !important;">
+      <nav
+        class="navbar navbar-default navbar-expand d-flex align-items-center"
+      >
+        <div class="container-fluid">
+          <div class="navbar-all-list d-flex justify-content-md-between">
+            <ul class="navbar-nav navbar-left">
+              <li class="li-nav">
+   
+                <div
+                  class="menu-toggle mobile-swipe swipe-icon"
+                  id="sidebar-swipe"
+                >
+                  <div class="trigger">
+                    <svg
+                      class="bars"
+                      viewBox="0 0 100 100"
+                      onclick="this.classList.toggle('active')"
+                    >
+                      <path
+                        class="line top"
+                        d="m 30,33 h 40 c 13.100415,0 14.380204,31.80258 6.899646,33.421777 -24.612039,5.327373 9.016154,-52.337577 -12.75751,-30.563913 l -28.284272,28.284272"
+                      ></path>
+                      <path
+                        class="line middle"
+                        d="m 70,50 c 0,0 -32.213436,0 -40,0 -7.786564,0 -6.428571,-4.640244 -6.428571,-8.571429 0,-5.895471 6.073743,-11.783399 12.286435,-5.570707 6.212692,6.212692 28.284272,28.284272 28.284272,28.284272"
+                      ></path>
+                      <path
+                        class="line bottom"
+                        d="m 69.575405,67.073826 h -40 c -13.100415,0 -14.380204,-31.80258 -6.899646,-33.421777 24.612039,-5.327373 -9.016154,52.337577 12.75751,30.563913 l 28.284272,-28.284272"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </li>
+              <li class="li-nav li-menu-name">
+                <span>Examination</span>
+              </li>
+            </ul>
+            <ul
+              class="navbar-nav d-flex gap-2 align-items-center navbarSideRight"
+            >
+              <li class="nav-item after-line-off message-box">
+                <a class="nav-link" href="#"
+                  ><img src="asset/img/navbar_icon/msg.svg" />
+                  <p class="notification-msg-numbar">12</p>
+                </a>
+              </li>
+
+              <li class="nav-item after-line-off notification-menu dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img src="asset/img/navbar_icon/notification.svg" />
+                  <p class="notification-msg-numbar">12</p>
+                </a>
+                <ul
+                  class="dropdown-menu notification-dropdown animate slideIn"
+                  style="right: 0; left: auto"
+                >
+                  <li class="mobile-notification">
+                    <p class="notification-header">Notification</p>
+                    <hr style="opacity: 0.1; margin: 0 auto; width: 95%" />
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link active"
+                          id="All-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#All-tab-pane"
+                          type="button"
+                          role="tab"
+                          aria-controls="All-tab-pane"
+                          aria-selected="true"
+                        >
+                          All
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="Unread-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#Unread-tab-pane"
+                          type="button"
+                          role="tab"
+                          aria-controls="Unread-tab-pane"
+                          aria-selected="false"
+                          tabindex="-1"
+                        >
+                          Unread
+                        </button>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div
+                        class="tab-pane fade show active"
+                        id="All-tab-pane"
+                        role="tabpanel"
+                        aria-labelledby="home-tab"
+                        tabindex="0"
+                      >
+                        <ul>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >This is the next notiification of the
+                              routerouterouterouterouteroute</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="Unread-tab-pane"
+                        role="tabpanel"
+                        aria-labelledby="profile-tab"
+                        tabindex="0"
+                      >
+                        <ul>
+                          <li>
+
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                          <li>
+                            <i class="bi bi-bell-fill"></i
+                            ><a href="#"
+                              >Where is next unread u next notiification of the
+                              route</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item search-modal_li">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#firtsearch"
+                >
+                  <i class="bi bi-search"></i>
+                </button>
+              </li>
+              <li
+                class="nav-item after-line-off dropdown profile-user go-content-mobile-576 go-content-resize-576"
+              >
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <!-- <img style="width: 22px;height: 22px;" src="asset/img/navbar_icon/user-icon.svg"> Hi, Sima -->
+                  <img
+                    style="width: 22px; height: 22px; border-radius: 100px"
+                    src="asset/img/profile/formal.jpg"
+                  />
+                  Hi, Sima
+                </a>
+                <ul
+                  class="dropdown-menu animate slideIn"
+                  style="right: 0; left: auto;border-bottom: 0px"
+                >
+                  <li class="nav-item-dropdown">
+                    <a href="#" class="dropdown-item"
+                      ><img src="asset/img/navbar_icon/teacher.svg" /> Teacher
+                      Dashboard</a
+                    >
+                  </li>
+                  <li class="nav-item-dropdown">
+                    <a href="#" class="dropdown-item"
+                      ><img src="asset/img/navbar_icon/student.svg" /> Student
+                      Dashboard</a
+                    >
+                  </li>
+                  <li class="nav-item-dropdown">
+                    <a href="#" class="dropdown-item"
+                      ><img src="asset/img/navbar_icon/prentsicon.svg" />
+                      Parents Dashboard</a
+                    >
+                  </li>
+
+                  <li class="nabbar-kids nav-item-dropdown">
+                    <a
+                      onclick="kidsMenu()"
+                      class="nav-link dropdown-toggle kids-dropdown kids-showdrp"
+                      href="#"
+                      id="navbarDropdownMenuLink"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      ><img src="asset/img/navbar_icon/kids.svg" /> Your Kids</a
+                    >
+                    <ul
+                      class="dropdown-menu-kids showdrp"
+                      id="gmDropdown"
+                      aria-labelledby="navbarDropdownMenuLink"
+                    >
+                      <li>
+                        <a class="dropdown-item-k" href="#"
+                          ><img src="asset/img/navbar_icon/kidpic.jpg" />Jhondie
+                          skd</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item-k" href="#"
+                          ><img src="asset/img/navbar_icon/kidpic.jpg" />Jhondie
+                          skd</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="nav-item-dropdown after-line-off language-choose">
+                    <div
+                      class="custom-select languaageClick"
+                      onclick="languaageClick()"
+                      style="width: 60px"
+                    >
+                      <img src="asset/img/navbar_icon/globe.svg" alt="" />
+                      <select>
+                        <option value="1">IND</option>
+                        <option value="2">ENG</option>
+                      </select>
+                    </div>
+                  </li>
+                  <li class="nav-item-dropdown settings">
+                    <a href="#" class="dropdown-item"
+                      ><img
+                        src="asset/img/navbar_icon/dharmachakra.svg"
+                      />Settings</a
+                    >
+                  </li>
+                  <li class="nav-item-dropdown logout">
+                    <a href="#" class="dropdown-item"
+                      ><img
+                        src="asset/img/navbar_icon/sign-out-alt.svg"
+                      />Logout</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+      </nav>
+  </header>
+  <div
+      class="modal fade searchmodal"
+      id="firtsearch"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="firtsearchLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="firtsearchLabel"></h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div id="wrapper" style="width: 100% !important;padding: 0px !important;">
+      <!-- Sidebar -->
+      <div class="page-content-wrapper" style="width: 100% !important;padding: 0px !important;">
+        <div class="assignment_question_mode h-100 w-100">
+          <p id="show_question__listing"><i class="bi bi-arrow-left arrow1"></i></p>
+            <div class="question_top_header">
+                <div class="container-fluid">
+                    <div class="row">
+                          <div class="col-md-12">
+                              <div class="question_top_header_content d-flex justify-content-between align-items-center">
+                                <div class="total__question_left">
+                                    <ul class="go_to_mobile">
+                                        <li id="quizTotalNumber"></li>
+                                        <li>Grade : <span id="allgredAllansQuestion"></span></li>
+                                    </ul>
+                                </div>
+                                <div class="time__left">
+                                    <ul class="go_to_mobile_coutdown">
+                                        <li>Time Left : </li>
+                                        <li>
+                                            <div id="totalCountdown" class="timers_box clearfix">
+                                              <div class="hours">0<span>Hours</span></div>
+                                              <div class="minutes">0<span>Mints</span></div>
+                                              <div class="seconds">0<span>Sec</span></div>
+                                          </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="assignment_question_mode_listing">
+                                    <ul class="list-unstyle p-0 m-0 mobile_question_sidebar_icon">
+                                      <li><i class="bi bi-list"></i></li>
+                                    </ul>
+                                    <ul class="go_to_mobile_mood">
+                                        <li>
+                                            <a href="#"><i class="fa fa-table" aria-hidden="true"></i>
+                                                Table Mode</a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="#"><i class="fa fa-list" aria-hidden="true"></i>
+                                                Question Mode</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-file" aria-hidden="true"></i>
+                                                Sheet Mode</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-unstyle mid_header_indicate_navbar mid_navbar_chevron_up">
+                                      <li class="mid-header-indicate"><i class="bi bi-chevron-up"></i></li>
+                                    </ul>
+                                    <div class="cal-icon">
+                                      <ul>
+                                          <li  onclick="calopen()"><i class="bi bi-calculator"></i></li>
+                                          
+                                          <li onclick="noteopen()"><i class="bi bi-pencil-square"></i></li>
+                                      </ul>
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix questing__exam container-fluid">
+              <div class="question__listing" id="question__listing">
+                
+                <div class="question_number_lists question-buttons" >
+                    <div class="entry_mobile_mood">
+                      <strong>View Mode</strong>
+                    </div>
+                    <strong>Question</strong>
+                    <p id="close_question__listing"><i class="bi bi-x-lg"></i></p>
+                    <p id="toogle_question__listing"><i class="bi bi-arrow-right"></i></p>
+                    
+
+                    <ul class="clearfix" id="includeQuestionList" class="includeQuestionList">
+                        <!-- <li><button id="q1Btn" class="not-answered skipped">1</button></li>
+                        <li><button id="q2Btn" class="not-answered skipped">2</button></li>
+                        <li><button id="q3Btn" class="not-answered skipped">3</button></li>
+                        <li><button id="q4Btn" class="not-answered skipped">4</button></li>
+                        <li><button id="q5Btn" class="not-answered skipped">5</button></li> -->
+                    </ul>
+                </div>
+                <div class="progress freedom-progressbar">
+                    <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100" style="max-width: 0% ">
+                        <span class="title">0%</span>
+                    </div>
+                </div>
+                <div class="questing_result mt-5">
+                    <p id="answeredCount"></p>
+                    <p id="correctAnsweredCount"> </p>
+                    <p id="wrongAnsweredCount"></p>
+                    <p id="reviewQuestionCount"></p>
+                    <p id="currentAnswredCount"></p>
+                    
+                </div>
+                <div class="submit_test mt-4">
+                    <a href="jasvascript:void(0)" id="submitTestBtn">Submit Test</a>
+                </div>
+                
+              </div>
+              <div class="question__answer_wrapper">
+                <div class="questiongs_wrapper container-fluid">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="remaining_time_for_questing">
+                          <ul>
+                              <li id="question-mark">
+                                
+                              </li>
+                              <!-- <li>
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                 
+                                  <div id="countdown" class="mt-2 left__time">
+                                    <div class="minutes"></div>
+                                    <div class="seconds"></div>
+                                  </div>
+
+                                  
+                              </li> -->
+                          </ul>
+                        </div>
+                        <div class="question_item" id="questionSection">
+                          <ul id="questionList" style="list-style-type: none;">
+                            <li id="question1" class="question" data-question-id="1" data-question-time="5" data-question-mark="20">
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">05</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+                             
+                              <div class="question_number">Question : 1</div>
+                              <div  class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <label>
+                                <input class="form-check-input" id="true" value="javascript" type="checkbox" name="q1">
+                                JavaScript
+                              </label><br>
+                              <label>
+                                <input value="html" class="form-check-input" type="checkbox" name="q1">
+                                HTML
+                              </label><br>
+                              <label>
+                                <input value="python" class="form-check-input" type="checkbox" name="q1">
+                                Python
+                              </label><br>
+                              <label>
+                                <input value="css" class="form-check-input" type="checkbox" name="q1">
+                                CSS
+                              </label><br>
+                                <br>
+                                <button  class="btn btn-success mt-2 submit_review submit-review-btn" data-question-id="1">Submit for Review</button>
+                            </li>
+                            <li id="question2" class="question" data-question-id="2" data-question-time="20" data-question-mark="9" >
+
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">20</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="question_number">Question : 2</div>
+                              <div  class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                                <label><input value="paris"  class="form-check-input" type="radio" name="q2"> Paris</label><br>
+                                <label><input value="madrid"  class="form-check-input" type="radio" name="q2"> Madrid</label><br>
+                                <label><input value="rome" class="form-check-input" type="radio" name="q2"> Rome</label><br>
+                                <br>
+                                <button class="btn btn-success mt-2 submit_review submit-review-btn" data-question-id="2">Submit for Review</button>
+                            </li>
+                            <li id="question3" class="question" data-question-id="3" data-question-time="19" data-question-mark="6" >
+                              
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">19</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+                               
+                              <div class="question_number">Question : 3</div>
+                              <div  class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                                <label><input value="3" class="form-check-input" type="radio" name="q3"> 3</label><br>
+                                <label><input value="4" class="form-check-input" type="radio" name="q3"> 4</label><br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="3">Submit for Review</button>
+                            </li>
+                            <li id="question4" class="question" data-question-id="4"  data-question-mark="17" data-question-time="16">
+                             
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">16</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div class="question_number">Question : 4</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <select class="form-control w-100 questionStudentDref" id="questionStudentDref">
+                                <!-- option tag starts -->
+                                <option  value="">Choose an option</option>
+                                <option value="html">HTML</option>
+                                <option value="java">JAVA</option>
+                                <option value="C++">C++</option>
+                                <option value="php">PHP</option>
+                                <option value="perl">PERL</option>
+                                <!-- option tag ends -->
+                              </select>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="4">Submit for Review</button>
+                            </li>
+                            <li id="question5" class="question" data-question-id="5"  data-question-mark="8" >
+                              <div class="question_number">Question : 5</div>
+                              <div class="question_title_part">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            </div>
+                            <textarea class="commoninputForQuestions " value="" rows="5" placeholder="your answered..." ></textarea>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="5">Submit for Review</button>
+                            </li>
+                            <li id="question6" class="question" data-question-id="6"  data-question-time="10" data-question-mark="7"  >
+
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">10</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="question_number">Question : 6</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <textarea class="commoninputForQuestions questionTextarea2" rows="5" value="" placeholder="your answered..." ></textarea>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="6">Submit for Review</button>
+                            </li>
+                            <li id="question7" class="question" data-question-id="7"  data-question-mark="9" >
+                              <div class="question_number">Question : 7</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <textarea class="commoninputForQuestions questionTextarea3" rows="5" value="" placeholder="your answered..." ></textarea>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="7">Submit for Review</button>
+                            </li>
+                            <li id="question8" class="question" data-question-id="8" data-question-time="70" data-question-mark="12" >
+                              
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">01</span> <span class="seconds">10</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="question_number">Question : 8</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <textarea class="commoninputForQuestions " rows="5" value="" placeholder="your answered..." ></textarea>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="8">Submit for Review</button>
+                            </li>
+                            <li id="question9" class="question" data-question-id="9" data-question-time="12" data-question-mark="20" >
+                            
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">12</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="question_number">Question : 9</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              <!-- <textarea class="commoninputForQuestions" rows="5" placeholder="your answered..." ></textarea> -->
+                              <div id="makeMeSummernote" class="summernote">
+
+                              </div>
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="9">Submit for Review</button>
+                            </li>
+
+                            <li id="question10" class="question" data-question-id="10"  data-question-time="110" data-question-mark="20" >
+                              
+                              <div class="specicTimeForQuestion">
+                                <div class="specicTimeForQuestionBlock">
+                                  <p id="remainingQues">Remaining Time For This Question</p>
+                                  <div id="countdown" class="countdown"><span class="minutes">00</span> <span class="seconds">10</span></div>
+                                  <div class="minsec">
+                                     <span>Min</span>
+                                     <span>Sec</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="question_number">Question : 10</div>
+                              <div class="question_title_part">
+                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                              </div>
+                              
+                                
+                              <div id="dragQuestion" class="linkingQuestion">
+                                <ul id="dragUL">
+                                  <li><span>Interview</span> <div id="1-draggable"    class="dragElement" draggable="true"><i class="far fa-circle"></i></div></li>
+                                  <li><span>Apple</span><div id="2-draggable"         class="dragElement" draggable="true"><i class="far fa-circle"></i></div></li>
+                                  <li><span>Necklaceeeeee</span><div id="3-draggable"      class="dragElement" draggable="true"><i class="far fa-circle"></i></div></li>
+                                  <li><span>Cockroach</span><div id="4-draggable"    class="dragElement" draggable="true"><i class="far fa-circle"></i></div></li>  
+                                  <li><span>Screwdriver</span><div id="5-draggable"  class="dragElement" draggable="true"><i class="far fa-circle"></i></div></li>
+                                </ul>
+                                <div class="canvasWrapper">
+                                  <canvas id="canvas"></canvas>
+                                  <canvas id="canvasTemp"></canvas>
+                                </div>
+                                <ul id="dropUL">
+                                  <li><div id="1-dropzone"  onclick="clearPath(event)" class="dragElement dropElement"> <i class="far fa-circle"></i> </div><span>Marcassin</span></li>
+                                  <li><div id="2-dropzone"  onclick="clearPath(event)" class="dragElement dropElement"> <i class="far fa-circle"></i> </div><span>Tournevis</span></li>
+                                  <li><div id="3-dropzone"  onclick="clearPath(event)" class="dragElement dropElement"> <i class="far fa-circle"></i> </div><span>Petit four</span></li>
+                                  <li><div id="4-dropzone"  onclick="clearPath(event)" class="dragElement dropElement"> <i class="far fa-circle"></i> </div><span>Cafard</span></li>
+                                  <li><div id="5-dropzone"  onclick="clearPath(event)" class="dragElement dropElement"> <i class="far fa-circle"></i> </div><span><img src="asset/img/student-dashboard/question10/apple.png"></span></li>
+                                
+
+                                </ul>
+                              </div>
+
+
+                                <br>
+                                <br>
+                                <button class="btn btn-success submit_review mt-2 submit-review-btn" data-question-id="10">Submit for Review</button>
+                            </li>
+
+                          </ul>
+                          
+                        </div>      
+                      </div>
+                    </div>
+                 
+
+                </div>
+                
+                <div class="container-fluid">
+                  <div class="row mt-5">
+                    <div class="col-sm-5">
+                        <!-- <a href="#"  class="submit_review">Submit for Review</a> -->
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="btm_action_btn d-flex flex-column justify-content-end align-items-end ">
+                            <div class="btn-bsn d-flex gap-2">
+                              <a href="jasvascript:void(0)" id="previousQuestionButton" class="back__btn">Back</a>
+                              <a href="jasvascript:void(0)" id="skipQuestionButton" class="skip__btn">Skip</a>
+                              <a href="jasvascript:void(0)" id="nextQuestionButton" class="next__btn">Next</a>
+                            </div>
+                            <div class="btn-cr">
+                              <a href="#" id="reportSubmitbtn"><i class="fa fa-flag" aria-hidden="true" ></i>
+                                Report</a>
+                                <a href="#" id="clearButton"><i class="fa fa-eraser" aria-hidden="true"></i>
+                                Clear</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                </br> 
+              </div>
+              
+            </div>
+            <div class="question_indicate">
+              <div class="question_indicate_block">
+                <p><span class="question_indicate_color_current"></span><span class="question_indicate_text">Current</span></p>
+                <p><span class="question_indicate_color_answered"></span><span class="question_indicate_text">submit for review</span></p>
+                <p><span class="question_indicate_color_visited"></span><span class="question_indicate_text">Not visited</span></p>
+                <p><span class="question_indicate_color_review"></span><span class="question_indicate_text">Answered but not submit</span></p>
+                <p><span class="question_indicate_color_skipped"></span><span class="question_indicate_text">Skipped</span></p>
+                <p><span class="question_indicate_color_correct"></span><span class="question_indicate_text">correct</span></p>
+                <p><span class="question_indicate_color_wrong"></span><span class="question_indicate_text">Wrong</span></p>
+              </div>
+              <div class="color_chevron_up"><i class="bi bi-chevron-up"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="submitTestModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Submit Quiz</h5>
+             
+          </div>
+          <div class="modal-body">
+              <p>Are you sure you want to submit the quiz?</p>
+          </div>
+          <div class="modal-footer">
+              <button id="confirmSubmitBtn" class="btn btn-success confirmQuizeBtn">Confirm</button>
+              <button id="cancelSubmitBtn" class="btn btn-secondary cencelQuizBtn" data-dismiss="modal">Cancel</button>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmSubmitModalLabel">Confirm Submission</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to submit this question? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary cencelQuizBtn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary confirmSubmitButton confirmQuizeBtn" id="confirmSubmitButton">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="reportSubmit" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Why You Report This?</h5>
+          </div>
+          <div class="modal-body reportradioCheck">
+            <label>
+              <input class="form-check-input" type="checkbox" name="reportReason" value="Question Is Not Right?">
+              Question Is Not Right?
+            </label>
+            <br>
+            <label>
+              <input class="form-check-input" type="checkbox" name="reportReason" value=" Answer Option Is Not Right?">
+              Answer Option Is Not Right?
+            </label>
+            <br>
+            <label>
+              <input class="form-check-input" type="checkbox" name="reportReason" value="Have No Right Option?">
+              Have No Right Option?
+            </label>
+            <br>
+          </div>
+          <div class="modal-footer">
+              <button id="confirmreportSubmit" class="btn btn-success cencelQuizBtn">Reported</button>
+              <button id="cancelreportSubmit" class="btn btn-secondary cencelQuizBtn" data-dismiss="modal">Cancel</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!---------------calculator section---------------->
+<div id="calc-container" class="mycalculator">
+  <div class="header">
+      <span>Mathmatics Calculator</span>
+      <p onclick="calclose()"><i class="bi bi-x-lg"></i></p>
+  </div>
+  <table class="calculator table">
+      <thead>			
+          <tr>
+              <td colspan=7>
+                  <div class="output form-group">
+                      <input type="text" class="ans form-control" readonly name="">
+                  </div>				
+              </td>
+          </tr>
+      </thead>
+      
+      <tbody class="actions">		
+          <tr>
+              <td colspan=3></td>
+              <td>
+                  <button class="btn btn-op" data-value='*('>(</button>	
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value=')'>)</button>	
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='%'>%</button>
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='ce'>CE</button>	
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <button class="btn btn-op" data-value='inv'>Inv</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='sin'>sin</button>			
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='ln'>ln</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='7'>7</button>
+              </td>
+              <td>
+                  <button class="btn" data-value='8'>8</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='9'>9</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='/'>&#x00f7;</button>				
+                  
+              </td>
+          </tr>			
+          <tr>
+              <td>
+                  <button class="btn btn-op" data-value='*3.14'>&pi;</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='cos'>cos</button>			
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='log'>log</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='4'>4</button>
+              </td>
+              <td>
+                  <button class="btn" data-value='5'>5</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='6'>6</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='*'>	&times;</button>
+              </td>
+          </tr>
+
+          <tr>
+              <td>
+                  <button class="btn btn-op" data-value='e'>e</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='tan'>tan</button>			
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='radic'>&radic;</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='3'>3</button>
+              </td>
+              <td>
+                  <button class="btn" data-value='2'>2</button>				
+              </td>
+              <td>
+                  <button class="btn" data-value='1'>1</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='-'>-</button>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <button class="btn btn-op" data-value='exp'>EXP</button>			
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='x^2'>x&#xb2;</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='**'>x&#94;</button>		
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='.'>.</button>
+              </td>
+              <td>
+                  <button class="btn" data-value='0'>0</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='='>=</button>				
+              </td>
+              <td>
+                  <button class="btn btn-op" data-value='+'>+</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+<!---------------note section---------------->
+<div id="note-container" class="mynote">
+<div class="header" id="mydivheader">
+  <span>Note</span>
+  <p onclick="noteclose()"><i class="bi bi-x-lg"></i></p>
+</div>
+<div class="noteheading">
+  <textarea class="form-control field" id="textnote" rows="6"></textarea>
+</div>
+</div>
+<div class="modal fade" id="warningModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Missing Answer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Please answer the question before submitting!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary cencelQuizBtn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="asset/js/custom/jquery.js"></script>
+<script defer src="asset/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+<script src="asset/js/custom/aos.js"></script>
+<script src="asset/js/custom/select2.min.js"></script>
+<script src="asset/js/custom/select2Custom.js"></script>
+<script src="asset/js/custom/student-dashboard.js"></script>
+<script src="asset/js/custom/drag.js"></script> 
+<script src="asset/js/custom/student_quiz.js"></script>
+<!-- <script src="asset/js/custom/student_quiz_drag.js"></script>    -->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    
+<script src="asset/js/custom/cal.js"></script>
+<script>
+
+
+$(function() {
+  $("#makeMeSummernote").summernote({
+    height: 520,
+    width: 320,
+    disableResizeEditor: true,
+  });
+ 
+})
+
+
+</script>
+
+</body>
+
+</html>

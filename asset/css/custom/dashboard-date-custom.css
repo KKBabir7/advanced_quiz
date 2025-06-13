@@ -1,0 +1,44 @@
+
+.datepicker td, .datepicker th {
+    color: var(--commonColor);
+}
+.datepicker table tr td.today.day.highlighted,.datepicker table tr td.today.day.disabled{
+    background: var(--commonColor) !important;
+   
+}
+
+.datepicker table tr td.today.day.highlighted:hover{
+    background: var(--commonColor) !important;
+
+}
+
+.datepicker table tr .active.day{
+
+    color: var(--commonColor) !important;
+}
+
+
+.datepicker table tr td.today.day{
+    background: var(--commonColor) !important ;
+
+}
+
+.datepicker table tr td.today.day:hover{
+    background: var(--commonColor)  !important;
+  
+}
+
+.datepicker .highlight-day{
+
+}
+
+.datepicker table tr td span.active.active{
+    background: var(--commonColor);
+   
+}
+
+.datepicker table tr td span.focused, .datepicker table tr td span:hover {
+    background: var(--commonColor);
+  
+    ;
+}
